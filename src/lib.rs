@@ -131,10 +131,7 @@ fn subscript_phonetic_change(
 // Insert a "y" character before the final "a" character of the phonetic
 // representation of the character.
 fn add_phonetic_ya_subscript<'a>(root_phonetic: String) -> String {
-    root_phonetic
-        .split_at(root_phonetic.len() - 2)
-        .0
-        .to_owned()
-        .push_str("ya");
-    return root_phonetic;
+    let mut r = root_phonetic.split_at(root_phonetic.len() - 1).0.to_owned();
+    r.push_str("ya");
+    return r;
 }
