@@ -6,16 +6,7 @@ use tibetan_calculator::{tibetan_data::*, *};
 
 // `init` describes what should happen when your app started.
 fn init(_: Url, _: &mut impl Orders<Msg>) -> Model {
-    Model {
-        tibetan_display: String::from("ཨ"),
-        phonetic_display: String::from(""),
-        prefix: None,
-        superscript: None,
-        root: None,
-        subscript: None,
-        suffix: None,
-        second_suffix: None,
-    }
+    Model::new()
 }
 
 // `Model` describes our app state.
@@ -28,6 +19,21 @@ struct Model {
     subscript: Option<&'static TibetanCharacter>,
     suffix: Option<&'static TibetanCharacter>,
     second_suffix: Option<&'static TibetanCharacter>,
+}
+
+impl Model {
+    fn new() -> Model {
+        Model {
+            tibetan_display: String::from("ཨ"),
+            phonetic_display: String::from(""),
+            prefix: None,
+            superscript: None,
+            root: None,
+            subscript: None,
+            suffix: None,
+            second_suffix: None,
+        }
+    }
 }
 
 enum Msg {
@@ -59,7 +65,14 @@ fn update(msg: Msg, model: &mut Model, _: &mut impl Orders<Msg>) {
     match msg {
         Msg::PrefixChanged(s) => update_msg!(s, model.prefix),
         Msg::SuperscriptChanged(s) => update_msg!(s, model.superscript),
-        Msg::RootChanged(s) => update_msg!(s, model.root),
+        Msg::RootChanged(s) => {
+            *model = Model::new();
+            let c = s.chars().next();
+            match c {
+                Some(c) => model.root = ROOTS.iter().find(|&t| t.tibetan == c),
+                None => model.root = None,
+            }
+        }
         Msg::SubscriptChanged(s) => update_msg!(s, model.subscript),
         Msg::SuffixChanged(s) => update_msg!(s, model.suffix),
         Msg::SecondSuffixChanged(s) => update_msg!(s, model.second_suffix),
@@ -70,16 +83,6 @@ fn update(msg: Msg, model: &mut Model, _: &mut impl Orders<Msg>) {
 
 fn update_displays(model: &mut Model) {
     if model.root.is_none() {
-        *model = Model {
-            tibetan_display: String::from("ཨ"),
-            phonetic_display: String::new(),
-            prefix: None,
-            superscript: None,
-            root: None,
-            subscript: None,
-            suffix: None,
-            second_suffix: None,
-        };
         return;
     }
     let syllable = TibetanSyllable {
