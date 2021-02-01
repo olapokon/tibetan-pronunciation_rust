@@ -1,12 +1,12 @@
 /// A complete Tibetan syllable, which always has a central root character,
 /// and may optionally also have a prefix, superscript, subscript, & up to two suffixes.
-pub struct TibetanSyllable<'a> {
-    pub root: &'a TibetanCharacter,
-    pub prefix: Option<&'a TibetanCharacter>,
-    pub superscript: Option<&'a TibetanCharacter>,
-    pub subscript: Option<&'a TibetanCharacter>,
-    pub suffix: Option<&'a TibetanCharacter>,
-    pub second_suffix: Option<&'a TibetanCharacter>,
+pub struct TibetanSyllable {
+    pub root: &'static TibetanCharacter,
+    pub prefix: Option<&'static TibetanCharacter>,
+    pub superscript: Option<&'static TibetanCharacter>,
+    pub subscript: Option<&'static TibetanCharacter>,
+    pub suffix: Option<&'static TibetanCharacter>,
+    pub second_suffix: Option<&'static TibetanCharacter>,
 }
 
 /// A single Tibetan character, which may be a stand-alone syllable, or a part of one.

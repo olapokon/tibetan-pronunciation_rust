@@ -13,23 +13,23 @@ pub fn generate_tibetan_character_map() -> HashMap<char, &'static TibetanCharact
 /// Returns an entire Tibetan syllable as a String.
 pub fn tibetan(syllable: &TibetanSyllable) -> String {
     let mut result = String::new();
-    if syllable.prefix.is_some() {
-        result.push(syllable.prefix.unwrap().unicode_code_point);
+    if let Some(prefix) = syllable.prefix {
+        result.push(prefix.unicode_code_point);
     }
-    if syllable.superscript.is_some() {
-        result.push(syllable.superscript.unwrap().unicode_code_point);
+    if let Some(superscript) = syllable.superscript {
+        result.push(superscript.unicode_code_point);
         result.push(syllable.root.unicode_code_point_as_subscript);
     } else {
         result.push(syllable.root.unicode_code_point);
     }
-    if syllable.subscript.is_some() {
-        result.push(syllable.subscript.unwrap().unicode_code_point_as_subscript);
+    if let Some(subscript) = syllable.subscript {
+        result.push(subscript.unicode_code_point_as_subscript);
     }
-    if syllable.suffix.is_some() {
-        result.push(syllable.suffix.unwrap().unicode_code_point);
+    if let Some(suffix) = syllable.suffix {
+        result.push(suffix.unicode_code_point);
     }
-    if syllable.second_suffix.is_some() {
-        result.push(syllable.second_suffix.unwrap().unicode_code_point);
+    if let Some(second_suffix) = syllable.second_suffix {
+        result.push(second_suffix.unicode_code_point);
     }
     return result;
 }
