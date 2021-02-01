@@ -1,3 +1,6 @@
 /target
 /pkg
 Cargo.lock
+
+# Local Netlify folder
+.netlify
