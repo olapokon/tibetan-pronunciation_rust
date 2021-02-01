@@ -1,7 +1,5 @@
 pub mod tibetan_data;
 
-use std::collections::HashMap;
-
 use tibetan_data::*;
 
 /// Returns an entire Tibetan syllable as a String.
