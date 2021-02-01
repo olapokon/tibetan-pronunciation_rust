@@ -58,7 +58,6 @@ fn update(msg: Msg, model: &mut Model, _: &mut impl Orders<Msg>) {
             }
         }
         Msg::RootChanged(s) => {
-            // if empty
             let c = s.chars().next();
             match c {
                 Some(c) => model.root = ROOTS.iter().find(|&t| t.tibetan == c),
@@ -158,7 +157,12 @@ fn view(model: &Model) -> Node<Msg> {
     ]
 }
 
-fn view_character_menu(disabled: bool, identifier: &str, label: &str, options: &[char]) -> Node<Msg> {
+fn view_character_menu(
+    disabled: bool,
+    identifier: &str,
+    label: &str,
+    options: &[char],
+) -> Node<Msg> {
     let msg = match identifier {
         "prefix" => Msg::PrefixChanged,
         "superscript" => Msg::SuperscriptChanged,
@@ -176,7 +180,10 @@ fn view_character_menu(disabled: bool, identifier: &str, label: &str, options: &
         ],
         select![
             id!(identifier),
-            C!["option__select", IF!(disabled => "option__select--inactive")],
+            C![
+                "option__select",
+                IF!(disabled => "option__select--inactive")
+            ],
             input_ev(Ev::Change, msg),
             IF!(disabled => attrs! {At::Disabled => true,}),
             option![],
