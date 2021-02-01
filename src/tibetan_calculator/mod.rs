@@ -4,12 +4,13 @@ use std::collections::HashMap;
 
 use tibetan_data::*;
 
-// Generates a hashmap where the key is the unicode code point for that character.
+/// Generates a hashmap where the key is the unicode code point for a Tibetan character
+/// and the value is the corresponding TibetanCharacter
 pub fn generate_tibetan_character_map() -> HashMap<char, &'static TibetanCharacter> {
     return ROOTS.iter().map(|r| (r.tibetan, r)).collect();
 }
 
-// Returns the entire Tibetan syllable in unicode, by combining the various characters.
+/// Returns an entire Tibetan syllable as a String.
 pub fn tibetan(syllable: &TibetanSyllable) -> String {
     let mut result = String::new();
     if syllable.prefix.is_some() {
@@ -33,7 +34,7 @@ pub fn tibetan(syllable: &TibetanSyllable) -> String {
     return result;
 }
 
-// Returns a phonetic representation of the Tibetan syllable in Latin characters
+/// Returns a phonetic representation of a Tibetan syllable in Latin characters.
 pub fn phonetic(syllable: &TibetanSyllable) -> String {
     let mut root_phonetic = String::from(syllable.root.phonetic);
     let mut diairesis = false;

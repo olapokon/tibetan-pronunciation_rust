@@ -1,5 +1,5 @@
-// A complete Tibetan syllable, which always has a central root character,
-// and may optionally also have a prefix, superscript, subscript, & up to two suffixes.
+/// A complete Tibetan syllable, which always has a central root character,
+/// and may optionally also have a prefix, superscript, subscript, & up to two suffixes.
 pub struct TibetanSyllable<'a> {
     pub root: &'a TibetanCharacter,
     pub prefix: Option<&'a TibetanCharacter>,
@@ -9,7 +9,7 @@ pub struct TibetanSyllable<'a> {
     pub second_suffix: Option<&'a TibetanCharacter>,
 }
 
-// A single Tibetan character, which may be a stand-alone syllable, or a part of one.
+/// A single Tibetan character, which may be a stand-alone syllable, or a part of one.
 #[derive(Debug)]
 pub struct TibetanCharacter {
     pub tibetan: char,
@@ -22,8 +22,8 @@ pub struct TibetanCharacter {
     pub column: Column,
 }
 
-// Returns the available subscripts for the given character.
 impl TibetanCharacter {
+    /// Returns the available subscripts for the given Tibetan character.
     pub fn available_subscripts(&self) -> Vec<char> {
         match self.tibetan {
             'ཀ' => vec!['ཡ', 'ར', 'ལ'],
@@ -46,7 +46,7 @@ impl TibetanCharacter {
     }
 }
 
-// What column a character is found in, in the Tibetan alphabet table.
+/// What column a character is found in, in the Tibetan alphabet table.
 #[derive(Debug, PartialEq)]
 pub enum Column {
     FIRST,
@@ -56,7 +56,7 @@ pub enum Column {
     NONE,
 }
 
-// A syllable/character's tone.
+/// A syllable/character's tone.
 #[derive(Debug, PartialEq, Clone, Copy)]
 pub enum Tone {
     HIGH,
@@ -69,7 +69,7 @@ pub const DIAIRESIS_UNICODE_CODE_POINT: char = '\u{0308}';
 pub const HIGH_TONE_UNICODE_CODE_POINT: char = '\u{0301}';
 pub const LOW_TONE_UNICODE_CODE_POINT: char = '\u{0300}';
 
-// All 30 Tibetan consonants.
+/// All 30 Tibetan consonants.
 pub const ROOTS: [TibetanCharacter; 30] = [
     TibetanCharacter {
         tibetan: 'ཀ',
