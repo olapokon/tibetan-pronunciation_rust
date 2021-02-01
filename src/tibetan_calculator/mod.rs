@@ -37,10 +37,8 @@ pub fn phonetic(syllable: &TibetanSyllable) -> String {
     // Calculate any change in the root, due to the presence of a prefix.
     // The root change of the subscript overrides the root change for a third column root with prefix.
     if syllable.prefix.is_some() || syllable.superscript.is_some() {
-        if column == &Column::THIRD {
-            if !syllable.root.phonetic_modified_third_column.is_empty() {
-                root_phonetic = syllable.root.phonetic_modified_third_column.to_owned();
-            }
+        if column == &Column::THIRD && !syllable.root.phonetic_modified_third_column.is_empty() {
+            root_phonetic = syllable.root.phonetic_modified_third_column.to_owned();
         }
         if column == &Column::FOURTH {
             tone = Tone::HIGH;
