@@ -40,51 +40,29 @@ enum Msg {
     NoChange,
 }
 
+macro_rules! update_msg {
+    ($($s:ident, $model:ident.$affix:ident)?) => {
+        $(
+            {
+                let c = $s.chars().next();
+                match c {
+                    Some(c) => $model.$affix = ROOTS.iter().find(|&t| t.tibetan == c),
+                    None => $model.$affix = None,
+                }
+            }
+        )?
+    };
+}
+
 // `update` describes how to handle each `Msg`.
 fn update(msg: Msg, model: &mut Model, _: &mut impl Orders<Msg>) {
     match msg {
-        Msg::PrefixChanged(s) => {
-            let c = s.chars().next();
-            match c {
-                Some(c) => model.prefix = ROOTS.iter().find(|&t| t.tibetan == c),
-                None => model.prefix = None,
-            }
-        }
-        Msg::SuperscriptChanged(s) => {
-            let c = s.chars().next();
-            match c {
-                Some(c) => model.superscript = ROOTS.iter().find(|&t| t.tibetan == c),
-                None => model.superscript = None,
-            }
-        }
-        Msg::RootChanged(s) => {
-            let c = s.chars().next();
-            match c {
-                Some(c) => model.root = ROOTS.iter().find(|&t| t.tibetan == c),
-                None => model.root = None,
-            }
-        }
-        Msg::SubscriptChanged(s) => {
-            let c = s.chars().next();
-            match c {
-                Some(c) => model.subscript = ROOTS.iter().find(|&t| t.tibetan == c),
-                None => model.subscript = None,
-            }
-        }
-        Msg::SuffixChanged(s) => {
-            let c = s.chars().next();
-            match c {
-                Some(c) => model.suffix = ROOTS.iter().find(|&t| t.tibetan == c),
-                None => model.suffix = None,
-            }
-        }
-        Msg::SecondSuffixChanged(s) => {
-            let c = s.chars().next();
-            match c {
-                Some(c) => model.second_suffix = ROOTS.iter().find(|&t| t.tibetan == c),
-                None => model.second_suffix = None,
-            }
-        }
+        Msg::PrefixChanged(s) => update_msg!(s, model.prefix),
+        Msg::SuperscriptChanged(s) => update_msg!(s, model.superscript),
+        Msg::RootChanged(s) => update_msg!(s, model.root),
+        Msg::SubscriptChanged(s) => update_msg!(s, model.subscript),
+        Msg::SuffixChanged(s) => update_msg!(s, model.suffix),
+        Msg::SecondSuffixChanged(s) => update_msg!(s, model.second_suffix),
         Msg::NoChange => (),
     }
     update_displays(model)
