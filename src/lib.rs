@@ -110,22 +110,43 @@ fn view(model: &Model) -> Node<Msg> {
         div![&model.phonetic_display, C!["display--transliteration"],],
         div![
             C!["options"],
-            view_character_menu(model.root.is_none(), "prefix", "Prefix", &PREFIXES),
+            // prefixes menu
             view_character_menu(
+                model.prefix,
+                model.root.is_none(),
+                "prefix",
+                "Prefix",
+                &PREFIXES
+            ),
+            // superscripts menu
+            view_character_menu(
+                model.superscript,
                 model.root.is_none(),
                 "superscript",
                 "Superscript",
                 &SUPERSCRIPTS
             ),
-            view_character_menu(false, "root", "Root character", &root_chars[..]),
+            // roots menu
+            view_character_menu(model.root, false, "root", "Root character", &root_chars[..]),
+            // subscripts menu
             view_character_menu(
+                model.subscript,
                 available_subscripts.len() == 0,
                 "subscript",
                 "Subscripts",
                 &available_subscripts[..]
             ),
-            view_character_menu(model.root.is_none(), "suffix", "Suffix 1", &SUFFIXES),
+            // suffixes menu
             view_character_menu(
+                model.suffix,
+                model.root.is_none(),
+                "suffix",
+                "Suffix 1",
+                &SUFFIXES
+            ),
+            // second suffixes menu
+            view_character_menu(
+                model.second_suffix,
                 model.suffix.is_none(),
                 "second_suffix",
                 "Suffix 2",
@@ -136,6 +157,7 @@ fn view(model: &Model) -> Node<Msg> {
 }
 
 fn view_character_menu(
+    value: Option<&TibetanCharacter>,
     disabled: bool,
     identifier: &str,
     label: &str,
@@ -150,6 +172,11 @@ fn view_character_menu(
         "second_suffix" => Msg::SecondSuffixChanged,
         _ => |_| Msg::NoChange,
     };
+    let value = match value {
+        Some(c) => String::from(c.tibetan),
+        None => String::new(),
+    };
+
     div![
         C!["option"],
         div![
@@ -163,6 +190,7 @@ fn view_character_menu(
                 IF!(disabled => "option__select--inactive")
             ],
             input_ev(Ev::Change, msg),
+            attrs! {At::Value => value},
             IF!(disabled => attrs! {At::Disabled => true,}),
             option![],
             options.iter().enumerate().map(|(i, opt)| {
