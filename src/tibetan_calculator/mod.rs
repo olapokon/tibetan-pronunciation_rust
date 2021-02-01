@@ -4,12 +4,6 @@ use std::collections::HashMap;
 
 use tibetan_data::*;
 
-/// Generates a hashmap where the key is the unicode code point for a Tibetan character
-/// and the value is the corresponding TibetanCharacter
-pub fn generate_tibetan_character_map() -> HashMap<char, &'static TibetanCharacter> {
-    return ROOTS.iter().map(|r| (r.tibetan, r)).collect();
-}
-
 /// Returns an entire Tibetan syllable as a String.
 pub fn tibetan(syllable: &TibetanSyllable) -> String {
     let mut result = String::new();
@@ -143,13 +137,11 @@ mod tests {
 
     #[test]
     fn with_subscript_ra() {
-        let roots = generate_tibetan_character_map();
-
         let syllable = TibetanSyllable {
-            root: roots.get(&'ཏ').unwrap(),
+            root: ROOTS.iter().find(|&t| t.tibetan == 'ཏ').unwrap(),
             prefix: None,
             superscript: None,
-            subscript: Some(roots.get(&'ར').unwrap()),
+            subscript: ROOTS.iter().find(|&t| t.tibetan == 'ར'),
             suffix: None,
             second_suffix: None,
         };
@@ -160,13 +152,11 @@ mod tests {
 
     #[test]
     fn with_subscript_ya() {
-        let roots = generate_tibetan_character_map();
-
         let syllable = TibetanSyllable {
-            root: roots.get(&'ག').unwrap(),
+            root: ROOTS.iter().find(|&t| t.tibetan == 'ག').unwrap(),
             prefix: None,
             superscript: None,
-            subscript: Some(roots.get(&'ཡ').unwrap()),
+            subscript: ROOTS.iter().find(|&t| t.tibetan == 'ཡ'),
             suffix: None,
             second_suffix: None,
         };
@@ -177,14 +167,12 @@ mod tests {
 
     #[test]
     fn root_change_with_diairesis() {
-        let roots = generate_tibetan_character_map();
-
         let syllable = TibetanSyllable {
-            root: roots.get(&'ག').unwrap(),
+            root: ROOTS.iter().find(|&t| t.tibetan == 'ག').unwrap(),
             prefix: None,
-            superscript: Some(roots.get(&'ས').unwrap()),
-            subscript: Some(roots.get(&'ར').unwrap()),
-            suffix: Some(roots.get(&'ལ').unwrap()),
+            superscript: ROOTS.iter().find(|&t| t.tibetan == 'ས'),
+            subscript: ROOTS.iter().find(|&t| t.tibetan == 'ར'),
+            suffix: ROOTS.iter().find(|&t| t.tibetan == 'ལ'),
             second_suffix: None,
         };
 
