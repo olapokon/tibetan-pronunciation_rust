@@ -47,17 +47,13 @@ enum Msg {
 }
 
 macro_rules! update_msg {
-    ($($s:ident, $model:ident.$affix:ident)?) => {
-        $(
-            {
-                let c = $s.chars().next();
-                match c {
-                    Some(c) => $model.$affix = ROOTS.iter().find(|&t| t.tibetan == c),
-                    None => $model.$affix = None,
-                }
-            }
-        )?
-    };
+    ($s:ident, $model:ident.$affix:ident) => {{
+        let c = $s.chars().next();
+        match c {
+            Some(c) => $model.$affix = ROOTS.iter().find(|&t| t.tibetan == c),
+            None => $model.$affix = None,
+        }
+    }};
 }
 
 // `update` describes how to handle each `Msg`.
