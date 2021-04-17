@@ -2,5 +2,8 @@
 /pkg
 Cargo.lock
 
+# IDE
+.idea
+
 # Local Netlify folder
 .netlify
